@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <linux_list.h>
+#include <libctfw/fltbl_api.h>
+#include <libctfw/fltbl.h>
 #define VLAN_TABLE "/etc/cyf_vlan"
 #define DNS_TABLE "/etc/cyf_dns"
 #define DHCP_TABLE "/etc/cyf_dhcp"
@@ -31,4 +33,8 @@ typedef struct cyf_dns{
     char local_domain[128];
 } cyf_dns_t;
 
-void cyf_vlan_load();
+static void cyf_vlan_load();
+static unsigned int cyf_do_table(const struct nf_hook_ops *ops, struct sk_buff *skb,
+		    const struct net_device *in, const struct net_device *out,
+		    int (*okfn)(struct sk_buff *));
+static void cyf_make_key_flowtable(struct sk_buff *skb,struct fltbl_key *key );
